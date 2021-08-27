@@ -2,19 +2,26 @@
   <div class="hello">
     <b-container fluid>
       <b-form @submit.prevent="postChat">
-        <b-form-textarea id="textarea-no-resize" rows="12" no-resize disabled>
-          {{ chats.length === 0 ? "" : chat.map((msg) =>
-          <div class="{" msg.type }>{ msg.message }</div>
-          )}}
+        <div class="demo">
+          <ul>
+            <li :key="messages.id" v-for="messages in chats" class="msg.type">
+              {{ messages }}
+            </li>
+          </ul>
           <div ref="scrollDown" v-on:scroll.passive="scrollBottom" />
-        </b-form-textarea>
+        </div>
         <div class="input-text">
           <b-form-input
             v-model="message"
             placeholder="text"
             @keyup.enter="postChat"
           ></b-form-input>
-          <b-button type="submit" variant="success" class="paper-plane">
+          <b-button
+            type="submit"
+            variant="success"
+            class="paper-plane"
+            :disabled="validated"
+          >
             <font-awesome-icon icon="paper-plane" />
             Send
           </b-button>
@@ -25,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "HelloWorld",
@@ -34,7 +41,15 @@ export default {
       message: "",
     };
   },
-  computed: mapGetters(["watsonChat"]),
+  computed: {
+    ...mapState({
+      chats: "chats",
+    }),
+    ...mapGetters(["watsonChat"]),
+    validated() {
+      return !this.message;
+    },
+  },
   methods: {
     ...mapActions(["userMessage", "sendMessage", "createSession"]),
     async postChat() {
@@ -79,5 +94,12 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+.demo {
+  font-family: Poppins, sans-serif;
+  border: 1px solid rgb(181, 176, 176);
+  border-radius: 2px;
+  height: 50vh;
+  margin-top: 1em;
 }
 </style>

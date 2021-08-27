@@ -47,10 +47,11 @@ const actions = {
   },
 };
 
+let { payload } = actions;
+let { chats } = state;
 const mutations = {
-  INPUT_SUCCESS: (state, actions) => {
-    const { payload } = actions;
-    const chats = [...state.chats, { message: payload, type: "user" }];
+  INPUT_SUCCESS: (state) => {
+    chats = [...chats, { message: payload, type: "user" }];
     return {
       ...state,
       chats,
@@ -61,15 +62,14 @@ const mutations = {
   },
   // eslint-disable-next-line camelcase
   SESSION_SUCCESS: (state) => {
-    localStorage.setItem("session", ["session_id"]);
+    localStorage.setItem("session", payload["session_id"]);
     return { ...state };
   },
   SESSION_FAIL: (state) => {
     return { ...state };
   },
-  MESSAGE_SUCCESS: (state, actions) => {
-    const { payload } = actions;
-    const chats = [...state.chats, { message: payload, type: "bot" }];
+  MESSAGE_SUCCESS: (state) => {
+    chats = [...chats, { message: payload, type: "bot" }];
     return {
       ...state,
       chats,
