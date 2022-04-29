@@ -5,7 +5,9 @@ const state = {
 };
 
 const getters = {
-  watsonChat: (state) => state.chats,
+  watsonChat: (state) => {
+    return state.chats;
+  },
 };
 
 const actions = {
@@ -23,6 +25,8 @@ const actions = {
       const response = await axios.get(
         "http://localhost:5000/api/watson/session"
       );
+
+      console.log(response.data);
       commit("SESSION_SUCCESS", response.data);
     } catch (error) {
       commit("SESSION_FAIL");
@@ -62,7 +66,7 @@ const mutations = {
   },
   // eslint-disable-next-line camelcase
   SESSION_SUCCESS: (state) => {
-    localStorage.setItem("session", payload["session_id"]);
+    localStorage.setItem("session", ["session_id"]);
     return { ...state };
   },
   SESSION_FAIL: (state) => {

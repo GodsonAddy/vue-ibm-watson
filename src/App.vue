@@ -21,16 +21,13 @@ export default {
   components: {
     HelloWorld,
   },
-  methods: {
+  computed: {
     ...mapActions(["createSession"]),
   },
-  setup() {
-    this.$watch(() => {
-      if (!localStorage.session) {
-        // Create
-        this.$store.dispatch("createSession");
-      }
-    });
+  created() {
+    if (!localStorage.session) {
+      this.$store.dispatch("createSession");
+    }
   },
 };
 </script>

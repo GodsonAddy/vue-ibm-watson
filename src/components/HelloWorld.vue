@@ -42,16 +42,14 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      chats: "chats",
-    }),
+    ...mapState(["chats"]),
     ...mapGetters(["watsonChat"]),
     validated() {
       return !this.message;
     },
   },
   methods: {
-    ...mapActions(["userMessage", "sendMessage", "createSession"]),
+    ...mapActions(["userMessage", "sendMessage"]),
     async postChat() {
       try {
         await this.userMessage(this.message);
